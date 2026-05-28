@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>PEI</h1>
+
+    {% if quantidade == 0 %}
+    <form action="{% url 'pei' %}" method="get">{% csrf_token  %}
+        <p>quantos funcionarios <input type="number" name="quantidade" id="quantidade"></p>
+        <input type="submit" value="confirmar">
+    </form>
+    {% elif quantidade > 0 %}
+    <form action="" method="post">{% csrf_token %}
+        <p>matricula do estudante <input type="number" name="matricula_estudante" id="matricula_estudante"></p>
+        <p>matricula do professor <input type="number" name="matricula_professor" id="matricula_professor"></p>
+        {%for i in lista%}
+        <p>cpf do funcionario <input type="number" name="cpf_{{i}}" id="cpf_{{i}}"></p>
+        {% endfor %}
+        <input type="submit" value="cadastrar">
+    </form>
+    {% endif %}
+
+</body>
+</html>
