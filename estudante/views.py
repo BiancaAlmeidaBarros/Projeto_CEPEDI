@@ -3,7 +3,7 @@ import json
 from django.core.handlers.base import reset_urlconf
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
-from .models import SistemaProfessor, Estudante, Professor, Funcionario
+from .models import SistemaProfessor, Estudante, Professor, Funcionario, PEI, FuncionarioEstudante
 # Create your views here.
 
 def cadastro(request):
@@ -90,22 +90,36 @@ def cadastro_funcionario(request):
 
 def pei(request):
     if request.method == "GET":
+        return render(request, 'PEI.html')
+    elif request.method == "POST":
+        matricula_estudante = request.POST.get("matricula_estudante")
+        matricula_professor = request.POST.get("matricula_professor")
+        validade = request.POST.get("validade")
+        estudante = Estudante.objects.filter(matricula = matricula_estudante).first()
+        professor = Professor.objects.filter(matricula = matricula_professor).first()
+        if estudante and professor:
+            PEI.objects.create(estudante=estudante, professor=professor, tempo=validade)
+            return HttpResponse("PEI cadastrado")
+        else:
+            return HttpResponse("PEI não cadastrado")
+
+def cadastro_equipe(request):
+    if request.method == "GET":
         quantidade = request.GET.get("quantidade", 0)
         quantidade = int(quantidade)
         lista = range(quantidade)
         dicionario = {"quantidade":quantidade, "lista":lista}
-        return render(request, 'PEI.html', dicionario)
+        return render(request, 'cadastro_equipe.html', dicionario)
     elif request.method == "POST":
-        matricula_estudante = request.POST.get("matricula_estudante")
-        matricula_professor = request.POST.get("matricula_professor")
-        quantidade = request.GET.get("quantidade", 0)
+        quantidade = request.POST.get("quantidade", 0)
         quantidade = int(quantidade)
-        lista = range(quantidade)
-        lista_funcionario = []
-        for i in lista:
-            funcionario = request.POST.get(f"cpf_{i}")
-            lista_funcionario.append(funcionario)
-        dicionario = {"matricula_estudante":matricula_estudante,
-                      "matricula_professor":matricula_professor,
-                      "lista_funcionario":lista_funcionario}
-        return HttpResponse(json.dumps(dicionario))
+        matricula = request.POST.get("matricula")
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        for i in range(quantidade):
+            cpf = request.POST.get(f"cpf_{i}")
+            funcionario = Funcionario.objects.filter(cpf=cpf).first()
+            if estudante and funcionario:
+                FuncionarioEstudante.objects.create(estudante=estudante, funcionario=funcionario)
+            else:
+                return HttpResponse("equipe não cadastrada")
+        return HttpResponse("equipe cadastrada")
