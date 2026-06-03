@@ -31,6 +31,7 @@ class Diagnostico(models.Model):
 
 class HistoricoEscolar(models.Model):
     texto = models.TextField()
+    texto2 = models.TextField()
     estudante = models.ForeignKey(Estudante, on_delete=models.CASCADE)
 
 class PerfilEstudante(models.Model):

@@ -3,7 +3,7 @@ import json
 from django.core.handlers.base import reset_urlconf
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
-from .models import SistemaProfessor, Estudante, Professor, Funcionario, PEI, FuncionarioEstudante
+from .models import SistemaProfessor, Estudante, Professor, Funcionario, PEI, FuncionarioEstudante, Diagnostico
 # Create your views here.
 
 def cadastro(request):
@@ -123,3 +123,23 @@ def cadastro_equipe(request):
             else:
                 return HttpResponse("equipe não cadastrada")
         return HttpResponse("equipe cadastrada")
+
+def diagnostico(request):
+    if request.method == "GET":
+        return render(request, 'diagnostico.html')
+    elif request.method == "POST":
+        estudante = request.POST.get("estudante")
+        laudo = request.POST.get("laudo")
+        texto_diagnostico = request.POST.get("texto_diagnostico")
+        ano = request.POST.get("ano")
+        ano = int(ano)
+        atendimento = request.POST.get("atendimento")
+        texto_atendimento = request.POST.get("texto_atendimento", " ")
+        estudante = Estudante.objects.filter(matricula=estudante).first()
+        if estudante:
+            Diagnostico.objects.create(estudante=estudante, laudo=laudo,
+                                       texto=texto_diagnostico, ano_diagnostico=ano,
+                                       atendimento_fora_da_escola = atendimento,
+                                       texto_atendimento=texto_atendimento)
+            return HttpResponse("diagnostico cadastrado")
+        return HttpResponse("diagnostico não cadastrado")

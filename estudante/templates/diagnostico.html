@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>diagnostico</h1>
+    <form action="{% url 'diagnostico' %}" method="post">{% csrf_token %}
+        <p>Qual a matricula do estudante <input type="number" name="estudante" id="estudante"></p>
+        <p>O estudante possui laudo</p>
+        <select name="laudo" id="laudo">
+            <option value="sim">sim</option>
+            <option value="nao">nao</option>
+            <option value="em fase de avaliacao">em fase de avaliacao</option>
+        </select>
+        <p>Qual o diagnostico <input type="text" name="texto_diagnostico" id="texto_diagnostico"></p>
+        <p>Ano que foi descoberto o diagnostico <input type="number" name="ano" id="ano"></p>
+        <p>Realiza algum atendimento fora da escola</p>
+        <select name="atendimento" id="atendimento">
+            <option value="sim">sim</option>
+            <option value="nao">nao</option>
+        </select>
+        <p>Qual tipo de atendimento e periodicidade <input type="text" name="texto_atendimento" id="texto_atendimento"></p>
+        <input type="submit" value="confirmar">
+    </form>
+</body>
+</html>
