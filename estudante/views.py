@@ -3,7 +3,9 @@ import json
 from django.core.handlers.base import reset_urlconf
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
-from .models import SistemaProfessor, Estudante, Professor, Funcionario, PEI, FuncionarioEstudante, Diagnostico
+from .models import (SistemaProfessor, Estudante, Professor, Funcionario, PEI,
+                     FuncionarioEstudante, Diagnostico, HistoricoEscolar,
+                     PerfilEstudante)
 # Create your views here.
 
 def cadastro(request):
@@ -143,3 +145,35 @@ def diagnostico(request):
                                        texto_atendimento=texto_atendimento)
             return HttpResponse("diagnostico cadastrado")
         return HttpResponse("diagnostico não cadastrado")
+
+def historico_escolar(request):
+    if request.method == "GET":
+        return render(request, 'historico_escolar.html')
+    elif request.method == "POST":
+        matricula = request.POST.get("matricula")
+        texto = request.POST.get("texto")
+        texto2 = request.POST.get("texto2")
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        if estudante:
+            HistoricoEscolar.objects.create(texto=texto, texto2=texto2, estudante=estudante)
+            return HttpResponse("historico escolar cadastrado")
+        return HttpResponse("historico escolar não cadastrado")
+
+def perfil_estudante(request):
+    if request.method == "GET":
+        return render(request, 'perfil_estudante.html')
+    elif request.method == "POST":
+        matricula = request.POST.get("matricula")
+        interesse = request.POST.get("interesse")
+        habilidade = request.POST.get("habilidade")
+        nao_gosta = request.POST.get("nao_gosta")
+        desafio = request.POST.get("desafio")
+        informacao = request.POST.get("informacao")
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        if estudante:
+            PerfilEstudante.objects.create(estudante=estudante,
+                                           interesse=interesse, habilidade = habilidade,
+                                           nao_gosta=nao_gosta, dificuldade=desafio,
+                                           informacao=informacao)
+            return HttpResponse("perfil do estudante cadastrado")
+        return HttpResponse("Perfil do estudante não cadastrado")

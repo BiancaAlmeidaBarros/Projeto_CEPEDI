@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    <h1>perfil do estudante</h1>
+    <form action="{% url 'perfil_estudante' %}" method="post">{% csrf_token %}
+        <p>matricula do estudante <input type="number" name="matricula" id="matricula"></p>
+        <p>interesse <input type="text" name="interesse" id="interesse"></p>
+        <p>habilidade <input type="text" name="habilidade" id="habilidade"></p>
+        <p>nao gosta <input type="text" name="nao_gosta" id="nao_gosta"></p>
+        <p>desafio <input type="text" name="desafio" id="desafio"></p>
+        <p>outras informações <input type="text" name="informacao" id="informacao"></p>
+        <input type="submit" value="confirmar">
+    </form>
+</body>
+</html>
