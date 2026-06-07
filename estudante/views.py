@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
 from .models import (SistemaProfessor, Estudante, Professor, Funcionario, PEI,
                      FuncionarioEstudante, Diagnostico, HistoricoEscolar,
-                     PerfilEstudante, Atividade)
+                     PerfilEstudante, Atividade, Planejamento)
 # Create your views here.
 
 def cadastro(request):
@@ -20,7 +20,7 @@ def cadastro_sistema(request):
         email = request.POST.get("email")
         senha = request.POST.get("senha")
         SistemaProfessor.objects.create(cpf=cpf, nome=nome, email=email, senha=senha)
-        professor = SistemaProfessor.objects.filter(cpf=cpf)
+        professor = SistemaProfessor.objects.filter(cpf=cpf).first()
         if professor:
             return HttpResponse("o usuario foi cadastrado")
         else:
@@ -51,7 +51,7 @@ def cadastro_estudante(request):
                                  nota=nota, telefone=telefone, email=email, pai=pai, mae=mae,
                                  telefone_responsavel=telefone_responsavel,
                                  email_responsavel=email_responsavel)
-        estudante = Estudante.objects.filter(cpf=cpf)
+        estudante = Estudante.objects.filter(cpf=cpf).first()
         if estudante:
             return HttpResponse("estudante cadastrado ")
         else:
@@ -70,7 +70,7 @@ def cadastro_professor(request):
         Professor.objects.create(cpf=cpf, nome=nome, matricula=matricula,
                                  data_de_nascimento=data_de_nascimento, email=email,
                                  telefone=telefone)
-        professor = Professor.objects.filter(cpf=cpf)
+        professor = Professor.objects.filter(cpf=cpf).first()
         if professor:
             return HttpResponse("O professor foi cadastrado ")
         else:
@@ -84,7 +84,7 @@ def cadastro_funcionario(request):
         nome = request.POST.get("nome")
         funcao = request.POST.get("funcao")
         Funcionario.objects.create(cpf=cpf, nome=nome, funcao=funcao)
-        funcionario = Funcionario.objects.filter(cpf=cpf)
+        funcionario = Funcionario.objects.filter(cpf=cpf).first()
         if funcionario:
             return HttpResponse("Funcionario cadastrado ")
         else:
@@ -181,7 +181,7 @@ def perfil_estudante(request):
 def atividade(request):
     if request.method == "GET":
         return render(request, "atividade.html")
-    if request.method == "POST":
+    elif request.method == "POST":
         matricula = request.POST.get("matricula")
         atividade1 = request.POST.get("atividade")
         descricao = request.POST.get("descricao")
@@ -191,3 +191,21 @@ def atividade(request):
                                      descricao=descricao)
             return HttpResponse("Atividade cadastrada")
         return HttpResponse("Atividade não cadastrada")
+
+def planejamento(request):
+    if request.method == "GET":
+        return render(request, "planejamento.html")
+    elif request.method == "POST":
+        matricula = request.POST.get("matricula")
+        habilidade = request.POST.get("habilidade")
+        metas_curto_prazo = request.POST.get("meta_curto_prazo")
+        metas_medio_prazo = request.POST.get("meta_medio_prazo")
+        metas_longo_prazo = request.POST.get("meta_longo_prazo")
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        if estudante:
+            Planejamento.objects.create(estudante=estudante, habilidade=habilidade,
+                                        metas_curto_prazo=metas_curto_prazo,
+                                        metas_medio_prazo = metas_medio_prazo,
+                                        metas_longo_prazo = metas_longo_prazo)
+            return HttpResponse("Planejamento cadastrado")
+        return HttpResponse("Planejamento não cadastrado")
