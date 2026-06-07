@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
 from .models import (SistemaProfessor, Estudante, Professor, Funcionario, PEI,
                      FuncionarioEstudante, Diagnostico, HistoricoEscolar,
-                     PerfilEstudante)
+                     PerfilEstudante, Atividade)
 # Create your views here.
 
 def cadastro(request):
@@ -176,4 +176,18 @@ def perfil_estudante(request):
                                            nao_gosta=nao_gosta, dificuldade=desafio,
                                            informacao=informacao)
             return HttpResponse("perfil do estudante cadastrado")
-        return HttpResponse("Perfil do estudante não cadastrado")
+        return HttpResponse("perfil do estudante não cadastrado")
+
+def atividade(request):
+    if request.method == "GET":
+        return render(request, "atividade.html")
+    if request.method == "POST":
+        matricula = request.POST.get("matricula")
+        atividade1 = request.POST.get("atividade")
+        descricao = request.POST.get("descricao")
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        if estudante:
+            Atividade.objects.create(estudante=estudante, atividade=atividade1,
+                                     descricao=descricao)
+            return HttpResponse("Atividade cadastrada")
+        return HttpResponse("Atividade não cadastrada")
