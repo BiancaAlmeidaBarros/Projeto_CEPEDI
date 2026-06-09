@@ -76,7 +76,7 @@ class AvaliacaoPedagogica(models.Model):
 
 class HabilidadeAcademica(models.Model):
     componente_curricular = models.TextField()
-    adataptacao_curricular = models.ForeignKey(ChecklistPergunta, on_delete=models.CASCADE)
+    adaptacao_curricular = models.TextField()
     habilidade = models.TextField()
     facilidade_dificuldade = models.TextField()
     metas_turma = models.TextField()

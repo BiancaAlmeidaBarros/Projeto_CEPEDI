@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    <h1>habilidade academica</h1>
+    <form action="{% url 'habilidade_academica' %}" method="post">{% csrf_token %}
+        <p>matricula do estudante <input type="text" name="matricula" id="matricula"></p>
+        <p>componente curricular <input type="text" name="componente" id="componente"></p>
+        <p>adaptacao curricular</p>
+        <label>
+            <input type="checkbox" name="adaptacao" id="item1" value="acesso ao curriculo">
+            acesso ao curriculo
+        </label>
+        <label>
+            <input type="checkbox" name="adaptacao" id="item2" value="conteudo">
+            conteudo
+        </label>
+        <label>
+            <input type="checkbox" name="adaptacao" id="item3" value="objetivos">
+            objetivos
+        </label>
+        <label>
+            <input type="checkbox" name="adaptacao" id="item4" value="metodologia e org didatica">
+            metodologia e org didatica
+        </label>
+        <label>
+            <input type="checkbox" name="adaptacao" id="item5" value="temporalidade">
+            temporalidade
+        </label>
+        <label>
+            <input type="checkbox" name="adaptacao" id="item6" value="Avaliação">
+            Avaliação
+        </label>
+        <p>habilidade <input type="text" name="habilidade" id="habilidade"></p>
+        <p>facilidade e dificuldade <input type="text" name="facilidade_dificuldade" id="facilidade_dificuldade"></p>
+        <p>metas para turma <input type="text" name="meta_turma" id="meta_turma"></p>
+        <p>metas especifica <input type="text" name="meta_especifica" id="meta_especifica"></p>
+        <p>procedimento metodologico <input type="text" name="procedimento" id="procedimento"></p>
+        <p>avaliacao <input type="text" name="avaliacao" id="avaliacao"></p>
+        <input type="submit" value="confirmar">
+    </>
+</body>
+</html>

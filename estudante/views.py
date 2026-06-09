@@ -5,7 +5,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
 from .models import (SistemaProfessor, Estudante, Professor, Funcionario, PEI,
                      FuncionarioEstudante, Diagnostico, HistoricoEscolar,
-                     PerfilEstudante, Atividade, Planejamento)
+                     PerfilEstudante, Atividade, Planejamento, HabilidadeAcademica)
 # Create your views here.
 
 def cadastro(request):
@@ -209,3 +209,30 @@ def planejamento(request):
                                         metas_longo_prazo = metas_longo_prazo)
             return HttpResponse("Planejamento cadastrado")
         return HttpResponse("Planejamento não cadastrado")
+
+def habilidade_academica(request):
+    if request.method == "GET":
+        return render(request, 'habilidade_academica.html')
+    elif request.method == "POST":
+        matricula = request.POST.get("matricula")
+        componente = request.POST.get("componente")
+        adaptacao = request.POST.getlist("adaptacao")
+        adaptacao = ", ".join(adaptacao)
+        habilidade = request.POST.get("habilidade")
+        facilidade_dificuldade = request.POST.get("facilidade_dificuldade")
+        meta_turma = request.POST.get("meta_turma")
+        meta_especifica = request.POST.get("meta_especifica")
+        procedimento = request.POST.get("procedimento")
+        avaliacao = request.POST.get("avaliacao")
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        if estudante:
+            HabilidadeAcademica.objects.create(estudante=estudante,
+                                               componente_curricular=componente,
+                                               adaptacao_curricular = adaptacao,
+                                               habilidade = habilidade,
+                                               facilidade_dificuldade = facilidade_dificuldade,
+                                               metas_turma = meta_turma, metas_especifica = meta_especifica,
+                                               procedimento_metodologico = procedimento,
+                                               avaliacao = avaliacao)
+            return HttpResponse("Habilidade registrada")
+        return HttpResponse("Habilidade nao registrada")
