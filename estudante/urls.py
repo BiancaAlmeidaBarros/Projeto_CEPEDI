@@ -15,5 +15,11 @@ urlpatterns = [
     path("atividade/", views.atividade, name="atividade"),
     path("planejamento/", views.planejamento, name="planejamento"),
     path("habilidade_academica/", views.habilidade_academica, name="habilidade_academica"),
+    path("adaptacao_curriculo/", views.adaptacao_curriculo, name="adaptacao_curriculo"),
+    path("adaptacao_objetivo/", views.adaptacao_objetivo, name="adaptacao_objetivo"),
+    path("adaptacao_conteudo/", views.adaptacao_conteudo, name="adaptacao_conteudo"),
+    path("adaptacao_metodo/", views.adaptacao_metodo, name="adaptacao_metodo"),
+    path("adaptacao_sistema/", views.adaptacao_sistema, name="adaptacao_sistema"),
+    path("adaptacao_temporalidade/", views.adaptacao_temporalidade, name="adaptacao_temporalidade")
 ]
 

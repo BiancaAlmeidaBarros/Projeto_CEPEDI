@@ -5,7 +5,8 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
 from .models import (SistemaProfessor, Estudante, Professor, Funcionario, PEI,
                      FuncionarioEstudante, Diagnostico, HistoricoEscolar,
-                     PerfilEstudante, Atividade, Planejamento, HabilidadeAcademica)
+                     PerfilEstudante, Atividade, Planejamento, HabilidadeAcademica,
+                     Checklist)
 # Create your views here.
 
 def cadastro(request):
@@ -236,3 +237,152 @@ def habilidade_academica(request):
                                                avaliacao = avaliacao)
             return HttpResponse("Habilidade registrada")
         return HttpResponse("Habilidade nao registrada")
+
+def adaptacao_curriculo(request):
+    if request.method == "GET":
+        tipo = "adaptacao de acesso ao curriculo"
+        checklist = ["Organização dos agrupamentos de estudantes",
+                     "Organização do Espaço Físico e Condições Ambientais",
+                     "Organização dos Recursos Didáticos",
+                     "Organização Didática da Aula"]
+        nome = "adaptacao_curriculo"
+        dicionario = {"tipo":tipo, "checklist":checklist, "nome":nome}
+
+        return render(request, 'checklist.html', dicionario)
+    elif request.method == "POST":
+        matricula = request.POST.get("matricula")
+        checklist = request.POST.getlist("checklist")
+        texto = request.POST.get("texto")
+        tipo = "adaptacao de acesso ao curriculo"
+        checklist = "\n".join(checklist)
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        if estudante:
+            Checklist.objects.create(estudante=estudante, checklist=tipo,
+                                     pergunta=checklist, texto=texto)
+            return HttpResponse("checklist registrada")
+        else:
+            return HttpResponse("checklist não registrada")
+
+def adaptacao_objetivo(request):
+    if request.method == "GET":
+        tipo = "adaptacao de objetivo"
+        checklist = ["Priorização de habilidades básicas de atenção, participação e adaptabilidade",
+                    "Adequação de objetivos, de acordo com a especificidade do(a) estudante",
+                    "Retirada de objetivos propostos no currículo escolar",
+                    "Introdução de objetivos específicos, complementares e/ou alternativos",]
+        nome = "adaptacao_objetivo"
+        dicionario = {"tipo":tipo, "checklist":checklist, "nome":nome}
+        return render(request, 'checklist.html', dicionario)
+    elif request.method == "POST":
+        matricula = request.POST.get("matricula")
+        checklist = request.POST.getlist("checklist")
+        texto = request.POST.get("texto")
+        tipo = "adaptacao de objetivo"
+        checklist = "\n".join(checklist)
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        if estudante:
+            Checklist.objects.create(estudante=estudante, checklist=tipo,
+                                     pergunta=checklist, texto=texto)
+            return HttpResponse("checklist registrada")
+        else:
+            return HttpResponse("checklist não registrada")
+
+def adaptacao_conteudo(request):
+    if request.method == "GET":
+        tipo = "adaptacao de conteudo"
+        checklist = ["Priorização de conteúdos",
+                    "Reformulação da sequência dos conteúdos",
+                    "Retomada de determinados conteúdos, garantindo seu domínio e consolidação",
+                    "Eliminação de conteúdos secundários, para dar enfoque mais intensivo e prolongado a conteúdos mais básicos e essenciais no currículo",
+                    "Introdução de conteúdos específicos, complementares ou alternativos" ]
+        nome = "adaptacao_conteudo"
+        dicionario = {"tipo":tipo, "checklist":checklist, "nome":nome}
+        return render(request, 'checklist.html', dicionario)
+    elif request.method == "POST":
+        matricula = request.POST.get("matricula")
+        checklist = request.POST.getlist("checklist")
+        texto = request.POST.get("texto")
+        tipo = "adaptacao de conteudo"
+        checklist = "\n".join(checklist)
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        if estudante:
+            Checklist.objects.create(estudante=estudante, checklist=tipo,
+                                     pergunta=checklist, texto=texto)
+            return HttpResponse("checklist registrada")
+        else:
+            return HttpResponse("checklist não registrada")
+
+def adaptacao_metodo(request):
+    if request.method == "GET":
+        tipo = "adaptacao do metodo de ensino e da organizacao didatica"
+        checklist = ["Modificação de procedimentos / estratégias de ensino",
+                    "Adoção de métodos, procedimentos e atividades alternativas e/ou complementares às previstas",
+                    "Organização diferenciada da sala de aula",
+                    "Adaptação de materiais",
+                    "Utilização de recursos específicos de acesso ao currículo"]
+        nome = "adaptacao_metodo"
+        dicionario = {"tipo":tipo, "checklist":checklist, "nome":nome}
+        return render(request, 'checklist.html', dicionario)
+    elif request.method == "POST":
+        matricula = request.POST.get("matricula")
+        checklist = request.POST.getlist("checklist")
+        texto = request.POST.get("texto")
+        tipo = "adaptacao do metodo de ensino e da organizacao didatica"
+        checklist = "\n".join(checklist)
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        if estudante:
+            Checklist.objects.create(estudante=estudante, checklist=tipo,
+                                     pergunta=checklist, texto=texto)
+            return HttpResponse("checklist registrada")
+        else:
+            return HttpResponse("checklist não registrada")
+
+def adaptacao_sistema(request):
+    if request.method == "GET":
+        tipo = "adaptacao do sistema de avaliacao"
+        checklist = ["Adaptação e/ou modificação de técnicas, instrumentos, procedimentos e critérios",
+                    "Introdução de critérios específicos de avaliação",
+                    "Necessidade de Avaliação em espaço diferente dos colegas",
+                    "Eliminação de critérios gerais de avaliação",
+                    "Modificação dos critérios de promoção"]
+        nome = "adaptacao_sistema"
+        dicionario = {"tipo":tipo, "checklist":checklist, "nome":nome}
+        return render(request, 'checklist.html', dicionario)
+    elif request.method == "POST":
+        matricula = request.POST.get("matricula")
+        checklist = request.POST.getlist("checklist")
+        texto = request.POST.get("texto")
+        tipo = "adaptacao do sistema de avaliacao"
+        checklist = "\n".join(checklist)
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        if estudante:
+            Checklist.objects.create(estudante=estudante, checklist=tipo,
+                                     pergunta=checklist, texto=texto)
+            return HttpResponse("checklist registrada")
+        else:
+            return HttpResponse("checklist não registrada")
+
+def adaptacao_temporalidade(request):
+    if request.method == "GET":
+        tipo = "adaptacao de temporalidade"
+        checklist = ["Aumento do Tempo para atividades e avaliações",
+                    "Aumento do tempo para trabalhar determinados objetivos/conteúdos",
+                    "Diminuição do tempo para trabalhar determinados objetivos/conteúdos",
+                    "Aumento do tempo do estudante em uma série",
+                    "Aceleração do estudante para série posterior"]
+        nome = "adaptacao_temporalidade"
+        dicionario = {"tipo":tipo, "checklist":checklist, "nome":nome}
+        return render(request, 'checklist.html', dicionario)
+    elif request.method == "POST":
+        matricula = request.POST.get("matricula")
+        checklist = request.POST.getlist("checklist")
+        texto = request.POST.get("texto")
+        tipo = "adaptacao de temporalidade"
+        checklist = "\n".join(checklist)
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        if estudante:
+            Checklist.objects.create(estudante=estudante, checklist=tipo,
+                                     pergunta=checklist, texto=texto)
+            return HttpResponse("checklist registrada")
+        else:
+            return HttpResponse("checklist não registrada")

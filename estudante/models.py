@@ -43,14 +43,8 @@ class PerfilEstudante(models.Model):
     estudante = models.ForeignKey(Estudante, on_delete = models.CASCADE )
 
 class Checklist(models.Model):
-    tipo = models.CharField(max_length=255)
-
-class Pergunta(models.Model):
-    nome = models.CharField(max_length=255)
-
-class ChecklistPerguntaTexto(models.Model):
-    checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE)
-    pergunta = models.ForeignKey(Pergunta, on_delete=models.CASCADE)
+    checklist = models.TextField()
+    pergunta = models.TextField()
     estudante = models.ForeignKey(Estudante, on_delete=models.CASCADE)
     texto = models.TextField()
 
@@ -65,10 +59,6 @@ class Planejamento(models.Model):
     metas_medio_prazo = models.TextField()
     metas_longo_prazo = models.TextField()
     estudante = models.ForeignKey(Estudante, on_delete=models.CASCADE)
-
-class ChecklistPergunta(models.Model):
-    checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE)
-    pergunta = models.ForeignKey(Pergunta, on_delete=models.CASCADE)
 
 class AvaliacaoPedagogica(models.Model):
     texto = models.TextField()
