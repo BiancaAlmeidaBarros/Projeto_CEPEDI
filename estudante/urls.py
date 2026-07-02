@@ -20,6 +20,7 @@ urlpatterns = [
     path("adaptacao_conteudo/", views.adaptacao_conteudo, name="adaptacao_conteudo"),
     path("adaptacao_metodo/", views.adaptacao_metodo, name="adaptacao_metodo"),
     path("adaptacao_sistema/", views.adaptacao_sistema, name="adaptacao_sistema"),
-    path("adaptacao_temporalidade/", views.adaptacao_temporalidade, name="adaptacao_temporalidade")
+    path("adaptacao_temporalidade/", views.adaptacao_temporalidade, name="adaptacao_temporalidade"),
+    path("gerar_pdf/", views.gerar_pdf, name="gerar_pdf"),
 ]
 

@@ -3,6 +3,8 @@ import json
 from django.core.handlers.base import reset_urlconf
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseBadRequest
+from django.template.loader import render_to_string
+from weasyprint import HTML
 from .models import (SistemaProfessor, Estudante, Professor, Funcionario, PEI,
                      FuncionarioEstudante, Diagnostico, HistoricoEscolar,
                      PerfilEstudante, Atividade, Planejamento, HabilidadeAcademica,
@@ -386,3 +388,28 @@ def adaptacao_temporalidade(request):
             return HttpResponse("checklist registrada")
         else:
             return HttpResponse("checklist não registrada")
+
+def gerar_pdf(request):
+    if request.method == "GET":
+        return render(request, "gerar_pdf_matricula.html")
+    elif request.method == "POST":
+        matricula = request.POST.get("matricula")
+        estudante = Estudante.objects.filter(matricula=matricula).first()
+        pei1 = PEI.objects.filter(estudante=estudante).first()
+        professor = pei1.professor
+        funcionario_estudante = FuncionarioEstudante.objects.filter(estudante=estudante)
+        diagnostico1 = Diagnostico.objects.filter(estudante=estudante).first()
+        historico_escolar1 = HistoricoEscolar.objects.filter(estudante=estudante).first()
+        perfil_estudante1 = PerfilEstudante.objects.filter(estudante=estudante).first()
+        checklist = Checklist.objects.filter(estudante=estudante)
+        atividade1 = Atividade.objects.filter(estudante=estudante).first()
+        planejamento1 = Planejamento.objects.filter(estudante=estudante).first()
+        habilidade_academica1 = HabilidadeAcademica.objects.filter(estudante=estudante).first()
+        dicionario = {"estudante":estudante, "pei":pei1, "professor":professor,
+                      "funcionarioEstudante":funcionario_estudante, "diagnostico":diagnostico1,
+                      "historico_escolar":historico_escolar1, "perfil_estudante":perfil_estudante1,
+                      "checklist":checklist, "atividade":atividade1, "planejamento":planejamento1,
+                      "habilidadeAcademica":habilidade_academica1}
+        html = render_to_string("gerar_pdf.html", dicionario)
+        pdf = HTML(string=html).write_pdf()
+        return HttpResponse(pdf, content_type="application/pdf")
