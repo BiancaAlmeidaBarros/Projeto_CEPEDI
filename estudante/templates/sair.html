@@ -1,0 +1,14 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    <h1>sair</h1>
+    <form action="{% url 'sair' %}" method="post">{% csrf_token %}
+        <input type="submit" value="sair">
+    </form>
+</body>
+</html>

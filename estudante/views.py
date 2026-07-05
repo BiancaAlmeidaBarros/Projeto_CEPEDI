@@ -1,7 +1,7 @@
 import json
 
 from django.core.handlers.base import reset_urlconf
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template.loader import render_to_string
 from weasyprint import HTML
@@ -9,6 +9,8 @@ from .models import (SistemaProfessor, Estudante, Professor, Funcionario, PEI,
                      FuncionarioEstudante, Diagnostico, HistoricoEscolar,
                      PerfilEstudante, Atividade, Planejamento, HabilidadeAcademica,
                      Checklist)
+from django.contrib.auth.hashers import make_password, check_password
+
 # Create your views here.
 
 def cadastro(request):
@@ -22,6 +24,7 @@ def cadastro_sistema(request):
         nome = request.POST.get("nome")
         email = request.POST.get("email")
         senha = request.POST.get("senha")
+        senha = make_password(senha)
         SistemaProfessor.objects.create(cpf=cpf, nome=nome, email=email, senha=senha)
         professor = SistemaProfessor.objects.filter(cpf=cpf).first()
         if professor:
@@ -29,8 +32,34 @@ def cadastro_sistema(request):
         else:
             return HttpResponse("o usuario não foi cadastrado")
 
-def cadastro_estudante(request):
+def login(request):
     if request.method == "GET":
+        return render(request, 'login.html')
+    elif request.method == "POST":
+        email = request.POST.get("email")
+        senha = request.POST.get("senha")
+        sistema_professor = SistemaProfessor.objects.filter(email=email).first()
+        if sistema_professor:
+            if check_password(senha, sistema_professor.senha):
+                request.session["sistema_professor_cpf"] = sistema_professor.cpf
+                request.session["sistema_professor_nome"] = sistema_professor.nome
+                return redirect("painel_administrador")
+        return HttpResponse("login não realizado")
+
+def sair(request):
+    request.session.flush()
+    return redirect("login")
+
+def painel_administrador(request):
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
+        return render(request, "painel_administrador.html")
+
+def cadastro_estudante(request):
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         return render(request, 'cadastro_estudante.html')
     elif request.method == "POST":
         cpf = request.POST.get("cpf")
@@ -61,7 +90,9 @@ def cadastro_estudante(request):
             return HttpResponse("estudante não cadastrado ")
 
 def cadastro_professor(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         return render(request, 'cadastro_professor.html')
     elif request.method == "POST":
         cpf = request.POST.get("cpf")
@@ -80,7 +111,9 @@ def cadastro_professor(request):
             return HttpResponse("O professor não foi cadastrado ")
 
 def cadastro_funcionario(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         return render(request, 'cadastro_funcionario.html')
     elif request.method == "POST":
         cpf = request.POST.get("cpf")
@@ -94,7 +127,9 @@ def cadastro_funcionario(request):
             return  HttpResponse("Funcionario não cadastrado")
 
 def pei(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         return render(request, 'PEI.html')
     elif request.method == "POST":
         matricula_estudante = request.POST.get("matricula_estudante")
@@ -109,7 +144,9 @@ def pei(request):
             return HttpResponse("PEI não cadastrado")
 
 def cadastro_equipe(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         quantidade = request.GET.get("quantidade", 0)
         quantidade = int(quantidade)
         lista = range(quantidade)
@@ -130,7 +167,9 @@ def cadastro_equipe(request):
         return HttpResponse("equipe cadastrada")
 
 def diagnostico(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         return render(request, 'diagnostico.html')
     elif request.method == "POST":
         estudante = request.POST.get("estudante")
@@ -150,7 +189,9 @@ def diagnostico(request):
         return HttpResponse("diagnostico não cadastrado")
 
 def historico_escolar(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         return render(request, 'historico_escolar.html')
     elif request.method == "POST":
         matricula = request.POST.get("matricula")
@@ -163,7 +204,9 @@ def historico_escolar(request):
         return HttpResponse("historico escolar não cadastrado")
 
 def perfil_estudante(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         return render(request, 'perfil_estudante.html')
     elif request.method == "POST":
         matricula = request.POST.get("matricula")
@@ -182,7 +225,9 @@ def perfil_estudante(request):
         return HttpResponse("perfil do estudante não cadastrado")
 
 def atividade(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         return render(request, "atividade.html")
     elif request.method == "POST":
         matricula = request.POST.get("matricula")
@@ -196,7 +241,9 @@ def atividade(request):
         return HttpResponse("Atividade não cadastrada")
 
 def planejamento(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         return render(request, "planejamento.html")
     elif request.method == "POST":
         matricula = request.POST.get("matricula")
@@ -214,7 +261,9 @@ def planejamento(request):
         return HttpResponse("Planejamento não cadastrado")
 
 def habilidade_academica(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         return render(request, 'habilidade_academica.html')
     elif request.method == "POST":
         matricula = request.POST.get("matricula")
@@ -241,7 +290,9 @@ def habilidade_academica(request):
         return HttpResponse("Habilidade nao registrada")
 
 def adaptacao_curriculo(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         tipo = "adaptacao de acesso ao curriculo"
         checklist = ["Organização dos agrupamentos de estudantes",
                      "Organização do Espaço Físico e Condições Ambientais",
@@ -266,7 +317,9 @@ def adaptacao_curriculo(request):
             return HttpResponse("checklist não registrada")
 
 def adaptacao_objetivo(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         tipo = "adaptacao de objetivo"
         checklist = ["Priorização de habilidades básicas de atenção, participação e adaptabilidade",
                     "Adequação de objetivos, de acordo com a especificidade do(a) estudante",
@@ -290,7 +343,9 @@ def adaptacao_objetivo(request):
             return HttpResponse("checklist não registrada")
 
 def adaptacao_conteudo(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         tipo = "adaptacao de conteudo"
         checklist = ["Priorização de conteúdos",
                     "Reformulação da sequência dos conteúdos",
@@ -315,7 +370,9 @@ def adaptacao_conteudo(request):
             return HttpResponse("checklist não registrada")
 
 def adaptacao_metodo(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         tipo = "adaptacao do metodo de ensino e da organizacao didatica"
         checklist = ["Modificação de procedimentos / estratégias de ensino",
                     "Adoção de métodos, procedimentos e atividades alternativas e/ou complementares às previstas",
@@ -340,7 +397,9 @@ def adaptacao_metodo(request):
             return HttpResponse("checklist não registrada")
 
 def adaptacao_sistema(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         tipo = "adaptacao do sistema de avaliacao"
         checklist = ["Adaptação e/ou modificação de técnicas, instrumentos, procedimentos e critérios",
                     "Introdução de critérios específicos de avaliação",
@@ -365,7 +424,9 @@ def adaptacao_sistema(request):
             return HttpResponse("checklist não registrada")
 
 def adaptacao_temporalidade(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         tipo = "adaptacao de temporalidade"
         checklist = ["Aumento do Tempo para atividades e avaliações",
                     "Aumento do tempo para trabalhar determinados objetivos/conteúdos",
@@ -390,7 +451,9 @@ def adaptacao_temporalidade(request):
             return HttpResponse("checklist não registrada")
 
 def gerar_pdf(request):
-    if request.method == "GET":
+    if not request.session.get("sistema_professor_cpf"):
+        return redirect("login")
+    elif request.method == "GET":
         return render(request, "gerar_pdf_matricula.html")
     elif request.method == "POST":
         matricula = request.POST.get("matricula")

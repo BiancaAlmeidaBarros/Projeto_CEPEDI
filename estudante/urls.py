@@ -22,5 +22,8 @@ urlpatterns = [
     path("adaptacao_sistema/", views.adaptacao_sistema, name="adaptacao_sistema"),
     path("adaptacao_temporalidade/", views.adaptacao_temporalidade, name="adaptacao_temporalidade"),
     path("gerar_pdf/", views.gerar_pdf, name="gerar_pdf"),
+    path("login/", views.login, name="login"),
+    path("sair/", views.sair, name="sair"),
+    path("painel_administrador/", views.painel_administrador, name="painel_administrador"),
 ]
 

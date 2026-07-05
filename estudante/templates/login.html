@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    <h1>login</h1>
+    <form action="{% url 'login' %}" method="post">{% csrf_token %}
+        <p>email <input type="email" name="email" id="email"></p>
+        <p>senha <input type="password" name="senha" id="senha"></p>
+        <input type="submit" value="confirmar">
+    </form>
+</body>
+</html>
