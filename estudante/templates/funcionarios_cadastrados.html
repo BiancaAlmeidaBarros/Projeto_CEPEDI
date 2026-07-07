@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    <h1>funcionarios cadastrados</h1>
+    {% for funcionario in funcionarios %}
+    <p>cpf: {{funcionario.cpf}}</p>
+    <p>nome: {{funcionario.nome}}</p>
+    <p>funcao: {{funcionario.funcao}}</p>
+    <hr>
+    {% endfor %}
+</body>
+</html>

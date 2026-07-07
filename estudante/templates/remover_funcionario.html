@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    <h1>remover funcionario</h1>
+    <form action="{% url 'remover_funcionario' %}" method="post">{% csrf_token %}
+        <label>
+            cpf <input type="text" name="cpf" id="cpf" list="funcionario">
+        </label>
+        <datalist id="funcionario">
+            {% for funcionario in funcionarios %}
+            <option value="{{funcionario.cpf}}">{{funcionario.nome}}</option>
+            {% endfor %}
+        </datalist>
+        <input type="submit" value="confirmar">
+    </form>
+
+</body>
+</html>
