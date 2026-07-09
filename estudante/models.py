@@ -32,6 +32,7 @@ class Diagnostico(models.Model):
 
 class HistoricoEscolar(models.Model):
     texto = models.TextField()
+    texto2 = models.TextField()
     estudante = models.ForeignKey(Estudante, on_delete=models.CASCADE)
 
 class PerfilEstudante(models.Model):
@@ -43,14 +44,8 @@ class PerfilEstudante(models.Model):
     estudante = models.ForeignKey(Estudante, on_delete = models.CASCADE )
 
 class Checklist(models.Model):
-    tipo = models.CharField(max_length=255)
-
-class Pergunta(models.Model):
-    nome = models.CharField(max_length=255)
-
-class ChecklistPerguntaTexto(models.Model):
-    checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE)
-    pergunta = models.ForeignKey(Pergunta, on_delete=models.CASCADE)
+    checklist = models.TextField()
+    pergunta = models.TextField()
     estudante = models.ForeignKey(Estudante, on_delete=models.CASCADE)
     texto = models.TextField()
 
@@ -66,17 +61,13 @@ class Planejamento(models.Model):
     metas_longo_prazo = models.TextField()
     estudante = models.ForeignKey(Estudante, on_delete=models.CASCADE)
 
-class ChecklistPergunta(models.Model):
-    checklist = models.ForeignKey(Checklist, on_delete=models.CASCADE)
-    pergunta = models.ForeignKey(Pergunta, on_delete=models.CASCADE)
-
 class AvaliacaoPedagogica(models.Model):
     texto = models.TextField()
     estudante = models.ForeignKey(Estudante, on_delete=models.CASCADE)
 
 class HabilidadeAcademica(models.Model):
     componente_curricular = models.TextField()
-    adataptacao_curricular = models.ForeignKey(ChecklistPergunta, on_delete=models.CASCADE)
+    adaptacao_curricular = models.TextField()
     habilidade = models.TextField()
     facilidade_dificuldade = models.TextField()
     metas_turma = models.TextField()

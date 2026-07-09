@@ -1,30 +1,29 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
 </head>
 <body>
-
-<h1>Cadastro de estudante</h1>
-<form action="{% url 'cadastro_estudante' %}" method="post">{% csrf_token %}
-    <p>cpf <input type="number" name="cpf" id="cpf"></p>
-    <p>matricula <input type="number" name="matricula" id="matricula"></p>
-    <p>nome <input type="text" name="nome" id="nome"></p>
-    <p>data de nascimento <input type="date" name="data_de_nascimento" id="data_de_nascimento"></p>
-    <p>curso <input type="text" name="curso" id="curso"></p>
-    <p>periodo <input type="number" name="periodo" id="periodo"></p>
-    <p>turma <input type="text" name="turma" id="turma"></p>
-    <p>ingresso <input type="date" name="ingresso" id="ingresso"></p>
-    <p>nota <input type="number" name="nota" id="nota"></p>
-    <p>telefone <input type="text" name="telefone" id="telefone"></p>
-    <p>email <input type="email" name="email" id="email"></p>
-    <p>pai <input type="text" name="pai" id="pai"></p>
-    <p>mae <input type="text" name="mae" id="mae"></p>
-    <p>telefone responsavel <input type="text" name="telefone_responsavel" id="telefone_responsavel"></p>
-    <p>email responsavel <input type="email" name="email_responsavel" id="email_responsavel"></p>
-    <input type="submit" value="cadastrar">
-</form>
-
+    <h1>Cadastro de estudante</h1>
+    <form action="{% url 'cadastro_estudante' %}" method="post">{% csrf_token %}
+        <p>cpf <input type="number" name="cpf" id="cpf"></p>
+        <p>matricula <input type="number" name="matricula" id="matricula"></p>
+        <p>nome <input type="text" name="nome" id="nome"></p>
+        <p>data de nascimento <input type="date" name="data_de_nascimento" id="data_de_nascimento"></p>
+        <p>curso <input type="text" name="curso" id="curso"></p>
+        <p>periodo <input type="number" name="periodo" id="periodo"></p>
+        <p>turma <input type="text" name="turma" id="turma"></p>
+        <p>ingresso <input type="date" name="ingresso" id="ingresso"></p>
+        <p>nota <input type="number" name="nota" id="nota"></p>
+        <p>telefone <input type="text" name="telefone" id="telefone"></p>
+        <p>email <input type="email" name="email" id="email"></p>
+        <p>pai <input type="text" name="pai" id="pai"></p>
+        <p>mae <input type="text" name="mae" id="mae"></p>
+        <p>telefone responsavel <input type="text" name="telefone_responsavel" id="telefone_responsavel"></p>
+        <p>email responsavel <input type="email" name="email_responsavel" id="email_responsavel"></p>
+        <input type="submit" value="cadastrar">
+    </form>
 </body>
 </html>

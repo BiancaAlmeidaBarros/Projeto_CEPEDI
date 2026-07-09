@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Checklist</h1>
+    <h1>{{tipo}}</h1>
+    <form action="{% url nome %}" method="post">{% csrf_token %}
+        <p>matricula do estudante <input type="text" name="matricula" id="matricula"></p>
+        {%for item in checklist%}
+        <p>
+            <label>
+                <input type="checkbox" name="checklist" id="" value="{{item}}">
+                {{item}}
+            </label>
+        </p>
+        {%endfor%}
+        <p>texto <input type="text" name="texto" id="texto"></p>
+        <input type="submit" value="confirmar">
+    </form>
+</body>
+</html>
