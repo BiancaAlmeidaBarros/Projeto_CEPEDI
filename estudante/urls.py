@@ -25,15 +25,5 @@ urlpatterns = [
     path("login/", views.login, name="login"),
     path("sair/", views.sair, name="sair"),
     path("painel_administrador/", views.painel_administrador, name="painel_administrador"),
-    path("estudante_cadastrado/", views.estudante_cadastrado, name="estudante_cadastrado"),
-    path("remover_estudante/", views.remover_estudante, name="remover_estudante"),
-    path("remover_professor/", views.remover_professor, name="remover_professor"),
-    path("remover_funcionario/", views.remover_funcionario, name="remover_funcionario"),
-    path("professor_cadastrado/", views.professor_cadastrado, name="professor_cadastrado"),
-    path("funcionario_cadastrado/", views.funcionario_cadastrado, name="funcionario_cadastrado"),
-    path("gerenciar_professor/", views.gerenciar_professor, name="gerenciar_professor"),
-    path("gerenciar_funcionario/", views.gerenciar_funcionario, name="gerenciar_funcionario"),
-    path("gerenciar_estudante/", views.gerenciar_estudante, name="gerenciar_estudante"),
-    path("cadastrar_pei/", views.cadastrar_pei, name="cadastrar_pei")
 ]
 
