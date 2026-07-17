@@ -1,3 +1,20 @@
+from django.contrib import admin
+from django.urls import path, include
+#A baixo está sendo acessado a classe RedirectView que é padrão do django
+#que tem funções para redirecionar um url para outro
+from django.views.generic.base import RedirectView
+
+urlpatterns = [
+    # Isso serve para redirecionar a url "" para onde está o login, sendo de forma permanente,
+    path('', RedirectView.as_view(url="estudante/login/")),
+    #Dales caso você queira colocar o '' para ser o link de login diretamente sem o RedirectView
+    #Apenas importe a views do estudante com "from estudante.views import login"
+    #Adicione o url normalmente com "path('', login),"
+    #Remova as partes do RedirectView e a outra url do "estudante/login/" para não ter duas urls para a mesma pagina
+    path('admin/', admin.site.urls),
+    path('estudante/', include('estudante.urls'))
+]
+
 """
 URL configuration for capne project.
 
@@ -14,12 +31,5 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('estudante/', include('estudante.urls')),
-    path('pei/', include('pei.urls'))
 
-]

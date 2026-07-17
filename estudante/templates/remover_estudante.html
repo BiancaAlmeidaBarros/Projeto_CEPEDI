@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    <h1>remover estudante</h1>
+    <form action="{% url 'remover_estudante' %}" method="post">{% csrf_token %}
+        <input type="text" name="estudante" id="estudante" list="lista_estudante">
+        <datalist id="lista_estudante">
+            {% for estudante in estudantes %}
+            <option value="{{estudante.matricula}}">{{estudante.nome}}</option>
+            {% endfor %}
+        </datalist>
+        <input type="submit" value="confirmar">
+
+    </form>
+</body>
+</html>

@@ -1,4 +1,3 @@
-
 from tkinter.constants import CASCADE
 
 from django.db import models
@@ -22,13 +21,16 @@ class Estudante(models.Model):
     telefone_responsavel = models.CharField(max_length=255)
     email_responsavel = models.CharField(max_length=255)
 
+    def __str__(self):
+        return f"{self.nome}-{self.cpf}-{self.matricula}"
+
 class Diagnostico(models.Model):
     laudo = models.CharField(max_length=255)
     texto = models.TextField()
     ano_diagnostico = models.IntegerField()
     atendimento_fora_da_escola = models.CharField()
     texto_atendimento = models.TextField()
-    estudante = models.ForeignKey(Estudante, on_delete=models.CASCADE)
+    estudante =  models.OneToOneField(Estudante, on_delete=models.CASCADE)
 
 class HistoricoEscolar(models.Model):
     texto = models.TextField()
@@ -84,10 +86,15 @@ class Professor(models.Model):
     email = models.EmailField()
     telefone = models.CharField(max_length=255)
 
+    def __str__(self):
+        return f"{self.nome}-{self.cpf}-{self.matricula}"
+
 class Funcionario(models.Model):
     cpf = models.IntegerField(primary_key=True)
     nome = models.CharField(max_length=255)
     funcao = models.CharField(max_length=255)
+    def __str__(self):
+        return f"{self.nome}-{self.cpf}-{self.funcao}"
 
 class FuncionarioEstudante(models.Model):
     funcionario = models.ForeignKey(Funcionario, on_delete=models.CASCADE)

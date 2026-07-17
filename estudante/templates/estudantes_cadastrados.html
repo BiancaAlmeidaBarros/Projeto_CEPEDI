@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Document</title>
+</head>
+<body>
+    {% include 'barra_lateral.html' %}
+    <main class="flex-grow-1 p-5">
+        <div class="topbar fw-bold" style=" background-color: #00B612; color: #ffffff; font-size: 14px;">
+            Sistema de Gestão de PEI e Acompanhamento Pedagogico
+        </div>
+
+        <br>
+    <h1>estudantes cadastrados</h1>
+    {% for estudante in estudantes %}
+    <p>matricula: {{estudante.matricula}}</p>
+    <p>cpf: {{estudante.cpf}}</p>
+    <p>nome: {{estudante.nome}}</p>
+    <p>data de nascimento: {{estudante.data_de_nascimento}}</p>
+    <p>curso: {{estudante.curso}}</p>
+    <p>turma: {{estudante.turma}}</p>
+    <p>periodo: {{estudante.periodo}}</p>
+    <p>ingresso: {{estudante.ingresso}}</p>
+    <p>email: {{estudante.email}}</p>
+    <p>telefone: {{estudante.telefone}}</p>
+    <hr>
+    {% endfor %}
+    </main>
+</body>
+</html>
